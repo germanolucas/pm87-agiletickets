@@ -4,4 +4,5 @@ public enum TipoDeEspetaculo {
 	
 	CINEMA, SHOW, TEATRO, BALLET, ORQUESTRA;
 	
+	
 }
