@@ -104,7 +104,7 @@ public class Espetaculo {
 		
 		for(int i=0; i<=Days.daysBetween(inicio, fim).getDays();i++) {
 			Sessao sessao = new Sessao();
-			sessao.setInicio(inicio.toDateTime(horario).plusDays(i));
+			sessao.setInicio(inicio.toDateTime(horario).plusDays(1));
 			sessao.setEspetaculo(this);
 
 			sessoes.add(sessao);			
