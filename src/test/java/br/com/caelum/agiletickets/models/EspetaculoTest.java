@@ -3,10 +3,74 @@ package br.com.caelum.agiletickets.models;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EspetaculoTest {
 
+	@Test
+	public void deveCriarApenasUmaSessaoQuandoOInicioForIgualAoFim() {
+		//ARRANGE
+		LocalDate inicio = new LocalDate(2018, 7, 5);
+		LocalDate fim = inicio;
+		LocalTime horario = new LocalTime(20, 0);
+		Periodicidade diaria = Periodicidade.DIARIA;
+		Espetaculo espetaculo = new Espetaculo();
+
+		//ACT
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, diaria);
+
+		//ASSERT
+		Assert.assertNotNull("Sessões não devem ser nulas", sessoes);
+		Assert.assertEquals(1,sessoes.size());
+		Sessao sessao = sessoes.get(0);
+		Assert.assertEquals("05/07/18",sessao.getDia());
+	}
+	
+	@Test
+	public void deveCriarUmaSessaoParaCadaDiaQuandoOFimForMaiorQueInicio() {
+		//ARRANGE
+		LocalDate inicio = new LocalDate(2018, 7, 5);
+		LocalDate fim = new LocalDate(2018, 7, 8);
+		LocalTime horario = new LocalTime(21, 0);
+		Periodicidade diaria = Periodicidade.DIARIA;
+		Espetaculo espetaculo = new Espetaculo();
+
+		//ACT
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, diaria);
+
+		//ASSERT
+		Assert.assertNotNull("Sessões não devem ser nulas", sessoes);
+		Assert.assertEquals(4,sessoes.size());
+		Sessao sessao = sessoes.get(0);
+		Assert.assertEquals("05/07/18",sessoes.get(0).getDia());
+		Assert.assertEquals("06/07/18",sessoes.get(1).getDia());
+		Assert.assertEquals("07/07/18",sessoes.get(2).getDia());
+		Assert.assertEquals(fim.toString(DateTimeFormat.shortDate().withLocale(new Locale("pt", "BR"))), sessoes.get(3).getDia());
+		
+	}
+	@Test
+	public void deveRetornarListaVaziaQuandoInicioForMaiorQueFim() {
+		
+		//ARRANGE
+		LocalDate inicio = new LocalDate(2018, 7, 9);
+		LocalDate fim = new LocalDate(2018, 7, 8);
+		LocalTime horario = new LocalTime(21, 0);
+		Periodicidade diaria = Periodicidade.DIARIA;
+		Espetaculo espetaculo = new Espetaculo();
+
+		//ACT
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, diaria);
+
+		Assert.assertEquals(0,sessoes.size());
+		
+	}
 	@Test
 	public void deveInformarSeEhPossivelReservarAQuantidadeDeIngressosDentroDeQualquerDasSessoes() {
 		Espetaculo ivete = new Espetaculo();
