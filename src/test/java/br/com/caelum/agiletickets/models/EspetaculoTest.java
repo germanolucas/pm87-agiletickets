@@ -48,13 +48,37 @@ public class EspetaculoTest {
 		//ASSERT
 		Assert.assertNotNull("Sessões não devem ser nulas", sessoes);
 		Assert.assertEquals(4,sessoes.size());
-		Sessao sessao = sessoes.get(0);
+
 		Assert.assertEquals("05/07/18",sessoes.get(0).getDia());
 		Assert.assertEquals("06/07/18",sessoes.get(1).getDia());
 		Assert.assertEquals("07/07/18",sessoes.get(2).getDia());
 		Assert.assertEquals(fim.toString(DateTimeFormat.shortDate().withLocale(new Locale("pt", "BR"))), sessoes.get(3).getDia());
 		
 	}
+	@Test
+	public void deveCriarSessoesSemanaisQuandoOFimForMaiorQueInicio() {
+		//ARRANGE
+		LocalDate inicio = new LocalDate(2018, 7, 5);
+		LocalDate fim = new LocalDate(2018, 7, 31);
+		LocalTime horario = new LocalTime(19, 0);
+		Periodicidade diaria = Periodicidade.SEMANAL;
+		Espetaculo espetaculo = new Espetaculo();
+
+		//ACT
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, diaria);
+
+		//ASSERT
+		Assert.assertNotNull("Sessões não devem ser nulas", sessoes);
+		Assert.assertEquals(4,sessoes.size());
+
+		Assert.assertEquals("05/07/18",sessoes.get(0).getDia());
+		Assert.assertEquals("12/07/18",sessoes.get(1).getDia());
+		Assert.assertEquals("19/07/18",sessoes.get(2).getDia());
+		Assert.assertEquals("26/07/18",sessoes.get(3).getDia());
+		//Assert.assertEquals(fim.toString(DateTimeFormat.shortDate().withLocale(new Locale("pt", "BR"))), sessoes.get(3).getDia());
+		
+	}
+	
 	@Test
 	public void deveRetornarListaVaziaQuandoInicioForMaiorQueFim() {
 		

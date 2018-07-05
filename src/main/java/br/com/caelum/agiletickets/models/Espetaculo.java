@@ -102,15 +102,17 @@ public class Espetaculo {
 		// ALUNO: Não apague esse metodo. Esse sim será usado no futuro! ;)
 		sessoes = new ArrayList<Sessao>();
 		
-		for(int i=0; i<=Days.daysBetween(inicio, fim).getDays();i++) {
+		int periodicidadeDias = (periodicidade == Periodicidade.DIARIA ? 1 : 7);
+		LocalDate data = inicio;
+		
+		while(data.isBefore(fim) || data.isEqual(fim)){
 			Sessao sessao = new Sessao();
-			sessao.setInicio(inicio.toDateTime(horario).plusDays(1));
+			sessao.setInicio(data.toDateTime(horario));
 			sessao.setEspetaculo(this);
-
-			sessoes.add(sessao);			
+			sessoes.add(sessao);
 			
+			data = data.plusDays(periodicidadeDias);
 		}
-;
 		
 		return sessoes;
 	}
