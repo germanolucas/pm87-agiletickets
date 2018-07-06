@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,7 @@ public class EstabelecimentosPage {
 
 	public EstabelecimentosPage(WebDriver driver) {
 		this.driver = driver;
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	public void abreListagem() {
@@ -28,6 +30,12 @@ public class EstabelecimentosPage {
 		form.findElement(By.name("estabelecimento.nome")).sendKeys(nome);
 		form.findElement(By.name("estabelecimento.endereco")).sendKeys(endereco);
 		form.submit();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void ultimaLinhaDeveConter(String nome, String endereco) {
